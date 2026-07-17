@@ -1,0 +1,26 @@
+{
+  "user": { "mobile": "01712345678", "name": "Shahriar Khaled" },
+  "wallet": { "balance": 5000.0 },
+  "transactions": [
+    { "id": "1", "name": "Rahim", "amount": -500.0, "type": "Send Money", "time": "10:30 AM", "acknowledged": false },
+    { "id": "2", "name": "Add Money", "amount": 1000.0, "type": "Add Money", "time": "9:00 AM", "acknowledged": false },
+    { "id": "3", "name": "Karim", "amount": -200.0, "type": "Send Money", "time": "Yesterday", "acknowledged": false },
+    { "id": "4", "name": "Add Money", "amount": 2000.0, "type": "Add Money", "time": "Yesterday", "acknowledged": false },
+    { "id": "5", "name": "Salam", "amount": -150.0, "type": "Send Money", "time": "2 days ago", "acknowledged": false }
+  ],
+  "banks": ["Dutch Bangla Bank", "BRAC Bank", "Islami Bank", "City Bank", "Eastern Bank"],
+  "kyc": {
+    "divisions": ["Dhaka", "Chittagong", "Rajshahi", "Khulna", "Sylhet", "Barisal"],
+    "districts": {
+      "Dhaka": ["Dhaka", "Gazipur", "Narayanganj", "Manikganj"],
+      "Chittagong": ["Chittagong", "Cox's Bazar", "Comilla", "Feni"],
+      "Rajshahi": ["Rajshahi", "Bogura", "Pabna", "Natore"],
+      "Khulna": ["Khulna", "Jessore", "Satkhira", "Bagerhat"],
+      "Sylhet": ["Sylhet", "Moulvibazar", "Habiganj", "Sunamganj"],
+      "Barisal": ["Barisal", "Bhola", "Patuakhali", "Pirojpur"]
+    }
+  },
+  "addMoney": { "success": true, "transactionId": "txn_mock_002", "newBalance": 0.0 },
+  "kycSubmit": { "success": true, "status": "submitted" },
+  "updateName": { "name": "" }
+}
