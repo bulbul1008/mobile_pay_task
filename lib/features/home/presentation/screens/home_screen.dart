@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_pay_task_1/core/widgets/mobile_pay_app_bar.dart';
 import 'package:mobile_pay_task_1/core/widgets/wallet_balance_card.dart';
 import 'package:mobile_pay_task_1/features/home/presentation/widgets/quick_action_card.dart';
@@ -29,8 +30,7 @@ class HomeScreen extends StatelessWidget {
                   iconColor: Colors.green,
                   iconBackground: Colors.greenAccent,
                   label: 'Add Money',
-                  onTap: () {},
-                ),
+                  onTap: () => context.push('/transactions'),                ),
               ),
               const SizedBox(width: 12),
             ],
