@@ -4,7 +4,7 @@ import 'package:mobile_pay_task_1/features/transactions/presentation/bloc/transa
 import 'package:mobile_pay_task_1/features/transactions/presentation/bloc/transactions_state.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
-  TransactionsBloc(this._getTransactions) : super(const TransactionsLoading()) {
+  TransactionsBloc(this._getTransactions) : super(const LoadingTransactions()) {
     on<TransactionsStarted>(_onStarted);
     on<TransactionsAdded>(_onAdded);
   }
@@ -15,23 +15,23 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
     TransactionsStarted event,
     Emitter<TransactionsState> emit,
   ) async {
-    emit(const TransactionsLoading());
+    emit(const LoadingTransactions());
 
     try {
       final transactions = await _getTransactions();
 
-      emit(TransactionsLoaded(transactions));
+      emit(LoadedTransactions(transactions));
     } catch (e) {
-      emit(TransactionsError(e.toString()));
+      emit(ErrorTransactions(e.toString()));
     }
   }
 
   void _onAdded(TransactionsAdded event, Emitter<TransactionsState> emit) {
-    if (state is TransactionsLoaded) {
-      final currentState = state as TransactionsLoaded;
+    if (state is LoadedTransactions) {
+      final currentState = state as LoadedTransactions;
 
       emit(
-        TransactionsLoaded([event.transaction, ...currentState.transactions]),
+        LoadedTransactions([event.transaction, ...currentState.transactions]),
       );
     }
   }

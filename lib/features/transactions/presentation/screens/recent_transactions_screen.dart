@@ -35,13 +35,13 @@ class _RecentTransactionsScreenState
       ),
       body: BlocBuilder<TransactionsBloc, TransactionsState>(
         builder: (context, state) {
-          if (state is TransactionsLoading) {
+          if (state is LoadingTransactions) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          if (state is TransactionsLoaded) {
+          if (state is LoadedTransactions) {
             if (state.transactions.isEmpty) {
               return const EmptyState(
                 message: 'No transactions yet.',
@@ -58,7 +58,7 @@ class _RecentTransactionsScreenState
             );
           }
 
-          if (state is TransactionsError) {
+          if (state is ErrorTransactions) {
             return Center(
               child: Text(state.message),
             );

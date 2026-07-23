@@ -20,22 +20,22 @@ class HomeScreen extends StatelessWidget {
             'Quick Actions',
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: QuickActionCard(
-                  icon: Icons.account_balance_outlined,
+                  icon: Icons.money,
                   iconColor: Colors.green,
                   iconBackground: Colors.greenAccent,
-                  label: 'Add Money',
-                  onTap: () => context.push('/transactions'),                ),
+                  label: 'Recent Transactions',
+                  onTap: () => context.push('/transactions'),
+                ),
               ),
               const SizedBox(width: 12),
             ],
           ),
-
         ],
       ),
     );

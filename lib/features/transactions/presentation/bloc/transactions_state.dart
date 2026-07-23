@@ -8,12 +8,15 @@ abstract class TransactionsState extends Equatable {
   List<Object?> get props => [];
 }
 
-final class TransactionsLoading extends TransactionsState {
-  const TransactionsLoading();
+final class InitialTransactions extends TransactionsState{
+  const InitialTransactions();
+}
+final class LoadingTransactions extends TransactionsState {
+  const LoadingTransactions();
 }
 
-final class TransactionsLoaded extends TransactionsState {
-  const TransactionsLoaded(this.transactions);
+final class LoadedTransactions extends TransactionsState {
+  const LoadedTransactions(this.transactions);
 
   final List<TransactionEntity> transactions;
 
@@ -21,8 +24,8 @@ final class TransactionsLoaded extends TransactionsState {
   List<Object?> get props => [transactions];
 }
 
-final class TransactionsError extends TransactionsState {
-  const TransactionsError(this.message);
+final class ErrorTransactions extends TransactionsState {
+  const ErrorTransactions(this.message);
 
   final String message;
 
