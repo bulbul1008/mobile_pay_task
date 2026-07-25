@@ -25,4 +25,10 @@ class AppDataSource {
     final Map<String, dynamic> jsonData = json.decode(jsonString);
     return jsonData['addMoney'] as Map<String, dynamic>;
   }
+
+  Future<List<String>> getBanks() async {
+    final jsonString = await rootBundle.loadString('assets/app_data.json');
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    return (jsonData['banks'] as List).cast<String>();
+  }
 }

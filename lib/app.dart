@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/data/app_data_source.dart';
 import 'core/navigation/app_router.dart';
+import 'features/add_money/data/repositories/bank_repository_impl.dart';
+import 'features/add_money/domain/repositories/bank_repository.dart';
+import 'features/add_money/domain/usecases/get_banks.dart';
 import 'features/transactions/data/repositories/transaction_repository_impl.dart';
 import 'features/transactions/domain/repositories/transaction_repository.dart';
 import 'features/transactions/domain/usecases/transactions_usecase.dart';
@@ -30,6 +33,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<TransactionRepository>(
           create: (_) => TransactionRepositoryImpl(dataSource),
         ),
+        RepositoryProvider<BankRepository>(
+          create: (_) => BankRepositoryImpl(dataSource),
+        ),
       ],
       child: Builder(
         builder: (context) =>
@@ -48,6 +54,9 @@ class MyApp extends StatelessWidget {
                       TransactionsUseCase(
                         context.read<TransactionRepository>(),
                       ),
+                ),
+                RepositoryProvider(
+                  create: (context) => GetBanks(context.read<BankRepository>()),
                 ),
               ],
               child: MultiBlocProvider(
