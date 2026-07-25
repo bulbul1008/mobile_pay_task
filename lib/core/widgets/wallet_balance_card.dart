@@ -45,7 +45,7 @@ class WalletBalanceCard extends StatelessWidget {
                 ),
 
                 LoadedWallet(:final balance) => Text(
-                  '৳ ${balance.toStringAsFixed(2)}',
+                  balance.toStringAsFixed(2),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 26,
