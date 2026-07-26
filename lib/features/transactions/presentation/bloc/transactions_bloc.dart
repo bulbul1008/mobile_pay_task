@@ -4,35 +4,40 @@ import 'package:mobile_pay_task_1/features/transactions/presentation/bloc/transa
 import 'package:mobile_pay_task_1/features/transactions/presentation/bloc/transactions_state.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
-  TransactionsBloc(this._getTransactions) : super(const LoadingTransactions()) {
+  TransactionsBloc({required TransactionsUseCase getTransactions})
+      : _getTransactions = getTransactions,
+        super(const TransactionsState()) {
     on<TransactionsStarted>(_onStarted);
-    on<TransactionsAdded>(_onAdded);
+    on<TransactionAcknowledged>(_onAcknowledged);
+    on<TransactionAdded>(_onAdded);
   }
 
   final TransactionsUseCase _getTransactions;
 
-  Future<void> _onStarted(
-    TransactionsStarted event,
-    Emitter<TransactionsState> emit,
-  ) async {
-    emit(const LoadingTransactions());
-
-    try {
-      final transactions = await _getTransactions();
-
-      emit(LoadedTransactions(transactions));
-    } catch (e) {
-      emit(ErrorTransactions(e.toString()));
-    }
+  Future<void> _onStarted(TransactionsStarted event,
+      Emitter<TransactionsState> emit,) async {
+    emit(state.copyWith(status: TransactionsStatus.loading));
+    final transactions = await _getTransactions();
+    emit(state.copyWith(
+      status: TransactionsStatus.loaded,
+      transactions: transactions,
+    ));
   }
 
-  void _onAdded(TransactionsAdded event, Emitter<TransactionsState> emit) {
-    if (state is LoadedTransactions) {
-      final currentState = state as LoadedTransactions;
+  void _onAcknowledged(TransactionAcknowledged event,
+      Emitter<TransactionsState> emit,) {
+    emit(state.copyWith(
+      transactions: [
+        for (final tx in state.transactions)
+          tx.id == event.id ? tx.copyWith(acknowledged: true) : tx,
+      ],
+    ));
+  }
 
-      emit(
-        LoadedTransactions([event.transaction, ...currentState.transactions]),
-      );
-    }
+  void _onAdded(TransactionAdded event,
+      Emitter<TransactionsState> emit,) {
+    emit(state.copyWith(
+      transactions: [event.transaction, ...state.transactions],
+    ));
   }
 }

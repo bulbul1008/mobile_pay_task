@@ -9,6 +9,8 @@ import 'features/add_money/domain/usecases/get_banks.dart';
 import 'features/transactions/data/repositories/transaction_repository_impl.dart';
 import 'features/transactions/domain/repositories/transaction_repository.dart';
 import 'features/transactions/domain/usecases/transactions_usecase.dart';
+import 'features/transactions/presentation/bloc/acknowledged_bloc.dart';
+import 'features/transactions/presentation/bloc/acknowledged_event.dart';
 import 'features/transactions/presentation/bloc/transactions_bloc.dart';
 import 'features/transactions/presentation/bloc/transactions_event.dart';
 import 'features/wallet/data/repositories/wallet_repository_impl.dart';
@@ -38,51 +40,69 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: Builder(
-        builder: (context) =>
-            MultiRepositoryProvider(
-              providers: [
-                RepositoryProvider(
-                  create: (context) =>
-                      GetWalletBalance(context.read<WalletRepository>()),
-                ),
-                RepositoryProvider(
-                  create: (context) =>
-                      AddMoneyToWallet(context.read<WalletRepository>()),
-                ),
-                RepositoryProvider(
-                  create: (context) =>
-                      TransactionsUseCase(
-                        context.read<TransactionRepository>(),
-                      ),
-                ),
-                RepositoryProvider(
-                  create: (context) => GetBanks(context.read<BankRepository>()),
-                ),
-              ],
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) =>
-                    WalletBloc(
-                      getWalletBalance: context.read<GetWalletBalance>(),
-                    )
-                      ..add(const WalletStarted()),
-                  ),
-                  BlocProvider(
-                    create: (context) =>
-                    TransactionsBloc(
-                      context.read<TransactionsUseCase>(),
-                    )
-                      ..add(const TransactionsStarted()),
-                  ),
-                ],
-                child: MaterialApp.router(
-                  debugShowCheckedModeBanner: false,
-                  title: 'MobilePay',
-                  routerConfig: appRouter,
+        builder: (context) {
+          return MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider<GetWalletBalance>(
+                create: (_) =>
+                    GetWalletBalance(
+                      context.read<WalletRepository>(),
+                    ),
+              ),
+              RepositoryProvider<AddMoneyToWallet>(
+                create: (_) =>
+                    AddMoneyToWallet(
+                      context.read<WalletRepository>(),
                 ),
               ),
+              RepositoryProvider<TransactionsUseCase>(
+                create: (_) =>
+                    TransactionsUseCase(
+                      context.read<TransactionRepository>(),
+                    ),
+              ),
+              RepositoryProvider<GetBanks>(
+                create: (_) =>
+                    GetBanks(
+                      context.read<BankRepository>(),
+                    ),
+              ),
+            ],
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                  WalletBloc(
+                    getWalletBalance:
+                    context.read<GetWalletBalance>(),
+                  )
+                    ..add(const WalletStarted()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                  TransactionsBloc(
+                    getTransactions:
+                    context.read<TransactionsUseCase>(),
+                  )
+                    ..add(const TransactionsStarted()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                  AcknowledgedBloc(
+                    getTransactions:
+                    context.read<TransactionsUseCase>(),
+                  )
+                    ..add(const AcknowledgedStarted()),
+                ),
+              ],
+              child: MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                title: 'MobilePay',
+                routerConfig: appRouter,
+              ),
             ),
+          );
+        },
       ),
     );
   }

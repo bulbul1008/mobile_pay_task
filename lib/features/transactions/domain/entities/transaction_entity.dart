@@ -19,6 +19,15 @@ class TransactionEntity extends Equatable {
 
   bool get isCredit => amount > 0;
 
+  TransactionEntity copyWith({bool? acknowledged}) => TransactionEntity(
+    id: id,
+    name: name,
+    amount: amount,
+    type: type,
+    time: time,
+    acknowledged: acknowledged ?? this.acknowledged,
+  );
+
   @override
   List<Object?> get props => [id, name, amount, type, time, acknowledged];
 }
