@@ -31,4 +31,14 @@ class AppDataSource {
     return (jsonData['banks'] as List).cast<String>();
   }
 
+  Future<Map<String, dynamic>> getUser() async {
+    final jsonString = await rootBundle.loadString(_appDataPath);
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    return (jsonData['user'] as Map<String, dynamic>);
+  }
+  Future<Map<String, dynamic>> patchUserName() async {
+    final jsonString = await rootBundle.loadString(_appDataPath);
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    return (jsonData['updateName'] as Map<String, dynamic>);
+  }
 }

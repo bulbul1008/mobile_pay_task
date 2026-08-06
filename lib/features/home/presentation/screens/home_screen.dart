@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                   iconColor: Colors.deepPurple,
                   iconBackground: Colors.deepPurple.shade200,
                   label: 'Recent Transactions',
-                  onTap: () => context.push('/transactions'),
+                  onTap: () => context.push('/home/transactions'),
                 ),
               ),
               const SizedBox(width: 12),

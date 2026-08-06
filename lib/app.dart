@@ -6,6 +6,12 @@ import 'core/navigation/app_router.dart';
 import 'features/add_money/data/repositories/bank_repository_impl.dart';
 import 'features/add_money/domain/repositories/bank_repository.dart';
 import 'features/add_money/domain/usecases/get_banks.dart';
+import 'features/profile/data/repositories/user_repository_impl.dart';
+import 'features/profile/domain/repositories/user_repository.dart';
+import 'features/profile/domain/usecases/get_user.dart';
+import 'features/profile/domain/usecases/update_user_name.dart';
+import 'features/profile/presentation/bloc/profile_bloc.dart';
+import 'features/profile/presentation/bloc/profile_event.dart';
 import 'features/transactions/data/repositories/transaction_repository_impl.dart';
 import 'features/transactions/domain/repositories/transaction_repository.dart';
 import 'features/transactions/domain/usecases/transactions_usecase.dart';
@@ -36,6 +42,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<BankRepository>(
           create: (_) => BankRepositoryImpl(dataSource),
         ),
+        RepositoryProvider<UserRepository>(
+          create: (_) => UserRepositoryImpl(dataSource),
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -56,6 +65,13 @@ class MyApp extends StatelessWidget {
               RepositoryProvider<GetBanks>(
                 create: (_) => GetBanks(context.read<BankRepository>()),
               ),
+              RepositoryProvider(
+                create: (context) => GetUser(context.read<UserRepository>()),
+              ),
+              RepositoryProvider(
+                create: (context) =>
+                    UpdateUserName(context.read<UserRepository>()),
+              ),
             ],
             child: Builder(
               builder: (context) {
@@ -70,6 +86,12 @@ class MyApp extends StatelessWidget {
                       create: (context) => TransactionsBloc(
                         getTransactions: context.read<TransactionsUseCase>(),
                       )..add(const TransactionsStarted()),
+                    ),
+                    BlocProvider(
+                      create: (context) => ProfileBloc(
+                        getUser: context.read<GetUser>(),
+                        updateUserName: context.read<UpdateUserName>(),
+                      )..add(const ProfileStarted()),
                     ),
                   ],
                   child: Builder(
