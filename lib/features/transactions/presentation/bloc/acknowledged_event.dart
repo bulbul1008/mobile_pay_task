@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:mobile_pay_task_1/features/transactions/domain/entities/transaction_entity.dart';
 
@@ -10,7 +9,12 @@ sealed class AcknowledgedEvent extends Equatable {
 }
 
 final class AcknowledgedStarted extends AcknowledgedEvent {
-  const AcknowledgedStarted();
+  const AcknowledgedStarted(this.transactions);
+
+  final List<TransactionEntity> transactions;
+
+  @override
+  List<Object?> get props => [transactions];
 }
 
 final class AcknowledgedAdded extends AcknowledgedEvent {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../transactions/presentation/bloc/transactions_bloc.dart';
-import '../../../transactions/presentation/bloc/transactions_event.dart';
 import '../../../wallet/presentation/bloc/wallet_bloc.dart';
 import '../../../wallet/presentation/bloc/wallet_event.dart';
 import '../../../wallet/presentation/bloc/wallet_state.dart';
@@ -24,16 +22,10 @@ class AddMoneySheetBody extends StatelessWidget {
             WalletBalanceUpdated(result.newBalance),
           );
 
-          context.read<TransactionsBloc>().add(
-            TransactionAdded(result.transaction),
-          );
-
           Navigator.of(context).pop();
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Money added successfully'),
-            ),
+            const SnackBar(content: Text('Money added successfully')),
           );
         }
       },
@@ -45,10 +37,7 @@ class AddMoneySheetBody extends StatelessWidget {
             left: 20,
             right: 20,
             top: 20,
-            bottom: MediaQuery
-                .of(context)
-                .viewInsets
-                .bottom + 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -56,13 +45,9 @@ class AddMoneySheetBody extends StatelessWidget {
             children: [
               const Text(
                 'Add Money',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
-
               if (state.status == AddMoneyStatus.loading)
                 const Center(
                   child: Padding(
@@ -73,16 +58,14 @@ class AddMoneySheetBody extends StatelessWidget {
               else ...[
                 DropdownButtonFormField<String>(
                   value: state.selectedBank,
-                  decoration: const InputDecoration(
-                    hintText: 'Select Bank',
-                  ),
+                  decoration: const InputDecoration(hintText: 'Select Bank'),
                   items: state.banks
                       .map(
                         (bank) => DropdownMenuItem<String>(
                           value: bank,
                           child: Text(bank),
                         ),
-                  )
+                      )
                       .toList(),
                   onChanged: (bank) {
                     if (bank != null) {
@@ -90,49 +73,40 @@ class AddMoneySheetBody extends StatelessWidget {
                     }
                   },
                 ),
-
                 const SizedBox(height: 12),
-
                 TextFormField(
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  decoration: const InputDecoration(
-                    hintText: 'Amount',
-                  ),
+                  decoration: const InputDecoration(hintText: 'Amount'),
                   onChanged: (value) {
                     bloc.add(AmountChanged(value));
                   },
                 ),
-
                 const SizedBox(height: 20),
-
                 FilledButton(
                   onPressed: state.canSubmit
                       ? () {
-                    final walletState =
-                        context
-                            .read<WalletBloc>()
-                            .state;
+                          final walletState = context.read<WalletBloc>().state;
 
-                    if (walletState is LoadedWallet) {
-                      bloc.add(
-                        AddMoneySubmitted(
-                          currentBalance: walletState.balance,
-                        ),
-                      );
-                    }
-                  }
+                          if (walletState is LoadedWallet) {
+                            bloc.add(
+                              AddMoneySubmitted(
+                                currentBalance: walletState.balance,
+                              ),
+                            );
+                          }
+                        }
                       : null,
                   child: state.status == AddMoneyStatus.submitting
                       ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
                       : const Text('Add Money'),
                 ),
               ],
