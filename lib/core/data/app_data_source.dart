@@ -41,4 +41,14 @@ class AppDataSource {
     final Map<String, dynamic> jsonData = json.decode(jsonString);
     return (jsonData['updateName'] as Map<String, dynamic>);
   }
+  Future<Map<String, dynamic>> getKycDivisions() async {
+    final jsonString = await rootBundle.loadString(_appDataPath);
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    return (jsonData['kyc'] as Map<String, dynamic>);
+  }
+  Future<Map<String,dynamic>> postKycSubmit() async {
+    final jsonString = await rootBundle.loadString(_appDataPath);
+    final Map<String,dynamic> jsonData = json.decode(jsonString);
+    return (jsonData['kycSubmit'] as Map<String, dynamic>);
+  }
 }

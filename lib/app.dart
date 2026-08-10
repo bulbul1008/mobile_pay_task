@@ -6,6 +6,10 @@ import 'core/navigation/app_router.dart';
 import 'features/add_money/data/repositories/bank_repository_impl.dart';
 import 'features/add_money/domain/repositories/bank_repository.dart';
 import 'features/add_money/domain/usecases/get_banks.dart';
+import 'features/kyc/data/repositories/kyc_repository_impl.dart';
+import 'features/kyc/domain/repositories/kyc_repository.dart';
+import 'features/kyc/domain/usecases/get_kyc_divisions.dart';
+import 'features/kyc/domain/usecases/submit_kyc.dart';
 import 'features/profile/data/repositories/user_repository_impl.dart';
 import 'features/profile/domain/repositories/user_repository.dart';
 import 'features/profile/domain/usecases/get_user.dart';
@@ -45,6 +49,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<UserRepository>(
           create: (_) => UserRepositoryImpl(dataSource),
         ),
+        RepositoryProvider<KycRepository>(
+          create: (_) => KycRepositoryImpl(dataSource),
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -71,6 +78,13 @@ class MyApp extends StatelessWidget {
               RepositoryProvider(
                 create: (context) =>
                     UpdateUserName(context.read<UserRepository>()),
+              ),
+              RepositoryProvider(
+                create: (context) =>
+                    GetKycDivisions(context.read<KycRepository>()),
+              ),
+              RepositoryProvider(
+                create: (context) => SubmitKyc(context.read<KycRepository>()),
               ),
             ],
             child: Builder(
