@@ -6,17 +6,18 @@ import '../../features/home/presentation/screens/main_shell.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/transactions/presentation/screens/recent_transactions_screen.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey =
-GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
 final GoRouter appRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: '/home',
   routes: [
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) =>
-          MainShell(navigationShell: navigationShell),
-
+      builder: (context, state, navigationShell) {
+        return MainShell(navigationShell: navigationShell);
+      },
       branches: [
         StatefulShellBranch(
           routes: [
@@ -26,8 +27,7 @@ final GoRouter appRouter = GoRouter(
               routes: [
                 GoRoute(
                   path: 'transactions',
-                  builder: (context, state) =>
-                  const RecentTransactionsScreen(),
+                  builder: (context, state) => const RecentTransactionsScreen(),
                 ),
               ],
             ),
