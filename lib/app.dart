@@ -19,8 +19,6 @@ import 'features/profile/presentation/bloc/profile_event.dart';
 import 'features/transactions/data/repositories/transaction_repository_impl.dart';
 import 'features/transactions/domain/repositories/transaction_repository.dart';
 import 'features/transactions/domain/usecases/transactions_usecase.dart';
-import 'features/transactions/presentation/bloc/transactions_bloc.dart';
-import 'features/transactions/presentation/bloc/transactions_event.dart';
 import 'features/wallet/data/repositories/wallet_repository_impl.dart';
 import 'features/wallet/domain/repositories/wallet_repository.dart';
 import 'features/wallet/domain/usecases/add_money_to_wallet.dart';
@@ -40,19 +38,24 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<WalletRepository>(
           create: (_) => WalletRepositoryImpl(dataSource),
         ),
+
         RepositoryProvider<TransactionRepository>(
           create: (_) => TransactionRepositoryImpl(dataSource),
         ),
+
         RepositoryProvider<BankRepository>(
           create: (_) => BankRepositoryImpl(dataSource),
         ),
+
         RepositoryProvider<UserRepository>(
           create: (_) => UserRepositoryImpl(dataSource),
         ),
+
         RepositoryProvider<KycRepository>(
           create: (_) => KycRepositoryImpl(dataSource),
         ),
       ],
+
       child: Builder(
         builder: (context) {
           return MultiRepositoryProvider(
@@ -61,32 +64,40 @@ class MyApp extends StatelessWidget {
                 create: (_) =>
                     GetWalletBalance(context.read<WalletRepository>()),
               ),
+
               RepositoryProvider<AddMoneyToWallet>(
                 create: (_) =>
                     AddMoneyToWallet(context.read<WalletRepository>()),
               ),
+
               RepositoryProvider<TransactionsUseCase>(
                 create: (_) =>
                     TransactionsUseCase(context.read<TransactionRepository>()),
               ),
+
               RepositoryProvider<GetBanks>(
                 create: (_) => GetBanks(context.read<BankRepository>()),
               ),
+
               RepositoryProvider(
                 create: (context) => GetUser(context.read<UserRepository>()),
               ),
+
               RepositoryProvider(
                 create: (context) =>
                     UpdateUserName(context.read<UserRepository>()),
               ),
+
               RepositoryProvider(
                 create: (context) =>
                     GetKycDivisions(context.read<KycRepository>()),
               ),
+
               RepositoryProvider(
                 create: (context) => SubmitKyc(context.read<KycRepository>()),
               ),
             ],
+
             child: Builder(
               builder: (context) {
                 return MultiBlocProvider(
@@ -96,11 +107,7 @@ class MyApp extends StatelessWidget {
                         getWalletBalance: context.read<GetWalletBalance>(),
                       )..add(const WalletStarted()),
                     ),
-                    BlocProvider(
-                      create: (context) => TransactionsBloc(
-                        getTransactions: context.read<TransactionsUseCase>(),
-                      )..add(const TransactionsStarted()),
-                    ),
+
                     BlocProvider(
                       create: (context) => ProfileBloc(
                         getUser: context.read<GetUser>(),
@@ -108,14 +115,11 @@ class MyApp extends StatelessWidget {
                       )..add(const ProfileStarted()),
                     ),
                   ],
-                  child: Builder(
-                    builder: (context) {
-                      return MaterialApp.router(
-                        debugShowCheckedModeBanner: false,
-                        title: 'MobilePay',
-                        routerConfig: appRouter,
-                      );
-                    },
+
+                  child: MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
+                    title: 'MobilePay',
+                    routerConfig: appRouter,
                   ),
                 );
               },
